@@ -19,7 +19,7 @@ class Nums:
         if self.child != None:
             self.child.print_nums()
 
-    def predict_next_num(self):
+    def predict_prev_num(self):
         stack = [self]
         child = self.child
         while child != None:
@@ -31,18 +31,27 @@ class Nums:
             if nums.child == None:
                 nums.predictedNumber = int(nums.numbers[0])
             else:
-                nums.predictedNumber = int(nums.numbers[len(nums.numbers)-1])+int(nums.child.predictedNumber)
+                nums.predictedNumber = int(nums.numbers[0])-int(nums.child.predictedNumber)
+    def predict_next_num(self):
+            stack = [self]
+            child = self.child
+            while child != None:
+                stack.append(child)
+                child = child.child
+
+            while len(stack) != 0:
+                nums = stack.pop()
+                if nums.child == None:
+                    nums.predictedNumber = int(nums.numbers[0])
+                else:
+                    nums.predictedNumber = int(nums.numbers[len(nums.numbers)-1])+int(nums.child.predictedNumber)
 
 
 
-n1 = Nums([1,3,6,10,15,21])
-n1.process_nums()
-n1.predict_next_num()
-n1.print_nums()
 
 
 
-
+#part1
 f = open("input.txt", "r")
 total = 0
 for line in f:
@@ -55,4 +64,16 @@ f.close()
 #answer 1647269739
 print("part 1 day 9", total)
 
+# part2
+f1 = open("input.txt", "r")
+total = 0
+for line in f1:
+    n1 = Nums(line.split())
+    n1.process_nums()
+    n1.predict_prev_num()
+    total += n1.predictedNumber
+f1.close()
+
+#answer 1647269739
+print("part 2 day 9", total)
 
